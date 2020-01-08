@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace ConstructionLine.CodingChallenge.Tests
 {
     [TestFixture]
-    public class SearchEngineTests : SearchEngineTestsBase
+    public class SearchEngineTests_Combined : SearchEngineTestsBase
     {
         private IList<Shirt> _shirts;
         private SearchOptions _searchOptions;
@@ -16,7 +16,11 @@ namespace ConstructionLine.CodingChallenge.Tests
             _shirts = new List<Shirt>
             {
                 new Shirt(Guid.NewGuid(), "Red - Small", Size.Small, Color.Red),
+                new Shirt(Guid.NewGuid(), "Red - Large", Size.Small, Color.Red),
                 new Shirt(Guid.NewGuid(), "Black - Medium", Size.Medium, Color.Black),
+                new Shirt(Guid.NewGuid(), "Black - Small", Size.Medium, Color.Black),
+                new Shirt(Guid.NewGuid(), "Blue - Small", Size.Large, Color.Blue),
+                new Shirt(Guid.NewGuid(), "Another Blue - Small", Size.Large, Color.Blue),
                 new Shirt(Guid.NewGuid(), "Blue - Large", Size.Large, Color.Blue),
             };
 

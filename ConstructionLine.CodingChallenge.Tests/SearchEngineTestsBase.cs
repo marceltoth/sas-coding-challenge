@@ -9,8 +9,8 @@ namespace ConstructionLine.CodingChallenge.Tests
     {
         private static bool IsMatch(Shirt shirt, List<Guid> filteringSizeIds, List<Guid> filteringColorIds)
         {
-            var hasMatchingSize = filteringSizeIds.Contains(shirt.Size.Id);
-            var hasMatchingColor = filteringColorIds.Contains(shirt.Color.Id);
+            var hasMatchingSize = filteringSizeIds.Contains(shirt.Size.Id) || filteringSizeIds.Count == 0;
+            var hasMatchingColor = filteringColorIds.Contains(shirt.Color.Id) || filteringColorIds.Count == 0;
             var isMatch = hasMatchingSize && hasMatchingColor;
 
             return isMatch;

@@ -31,8 +31,8 @@ namespace ConstructionLine.CodingChallenge
                 sizeCounter.Add(shirt.Size);
                 colorCounter.Add(shirt.Color);
 
-                bool isSizeMatch = filterSizes.Contains(shirt.Size.Id);
-                bool isColorMatch = filterColors.Contains(shirt.Color.Id);
+                bool isSizeMatch = filterSizes.Contains(shirt.Size.Id) || (filterSizes.Count == 0);
+                bool isColorMatch = filterColors.Contains(shirt.Color.Id) || (filterColors.Count == 0);
 
                 if (isColorMatch && isSizeMatch)
                 {
