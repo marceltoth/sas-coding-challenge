@@ -18,7 +18,7 @@ namespace ConstructionLine.CodingChallenge.Tests
 
         protected static ISearchEngine GenerateSearchEngine(IList<Shirt> shirts)
         {
-            return new SearchEngineWithCache(shirts);
+            return new SearchEngine(shirts);
         }
 
         protected static void AssertSearchDidNotMissShirts(IList<Shirt> allShirts, SearchOptions options, IList<Shirt> foundShirts)

@@ -6,7 +6,7 @@ namespace ConstructionLine.CodingChallenge
 {
     /// <summary>
     /// This Search Engine trades the memory consumption and write performance for query (read) performance
-    /// Search on 500k items runs in around 20ms. 
+    /// Search on 50k items runs in around 5ms, search on 500k items runs in around 20ms. 
     /// </summary>
     public class SearchEngineWithCache : ISearchEngine
     {
