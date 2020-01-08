@@ -6,7 +6,7 @@ namespace ConstructionLine.CodingChallenge
     /// <summary>
     /// This Search Engine has O(1) space complexity and O(n) time complexity
     /// Search on 50k items runs in around 20ms. 
-    /// It uses no caching, so is optimal for regular data updates and regular querying of up to 100k data items
+    /// It uses no caching, so is optimal for regular data updates and comfortable regular  querying of up to 10M data items
     /// </summary>
     public class SearchEngine : ISearchEngine
     {
@@ -31,8 +31,8 @@ namespace ConstructionLine.CodingChallenge
                 sizeCounter.Add(shirt.Size);
                 colorCounter.Add(shirt.Color);
 
-                bool isSizeMatch = filterSizes.Contains(shirt.Size.Id) || (filterSizes.Count == 0);
-                bool isColorMatch = filterColors.Contains(shirt.Color.Id) || (filterColors.Count == 0);
+                bool isSizeMatch = filterSizes.Contains(shirt.Size.Id);
+                bool isColorMatch = filterColors.Contains(shirt.Color.Id);
 
                 if (isColorMatch && isSizeMatch)
                 {

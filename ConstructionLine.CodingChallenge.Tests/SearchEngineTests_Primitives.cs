@@ -32,12 +32,11 @@ namespace ConstructionLine.CodingChallenge.Tests
         public void ShouldReturnCorrectResults_WhenQueryingSingleSizeWithoutColor()
         {
             // Arrange
-            var expectedId = Guid.NewGuid();
             var shirts = new List<Shirt>
             {
                 new Shirt(Guid.NewGuid(), "1. Red - Small", Size.Small, Color.Red),
                 new Shirt(Guid.NewGuid(), "2. Red - Large", Size.Large, Color.Red),
-                new Shirt(expectedId, "3. Black - Medium", Size.Medium, Color.Black),
+                new Shirt(Guid.NewGuid(), "3. Black - Medium", Size.Medium, Color.Black),
                 new Shirt(Guid.NewGuid(), "4. Black - Large", Size.Large, Color.Black),
             };
 
@@ -54,19 +53,17 @@ namespace ConstructionLine.CodingChallenge.Tests
             // Assert
             AssertColorCounts(results.ColorCounts, red: 2, blue: 0, yellow: 0, white: 0, black: 2);
             AssertSizeCounts(results.SizeCounts, small: 1, medium: 1, large: 2);
-            AssertResultShirts(results.Shirts, expectedId);
+            AssertResultShirts(results.Shirts, expectedIds: new Guid[0]);
         }
 
         [Test]
         public void ShouldReturnCorrectResults_WhenQueryingSingleColorWithoutSize()
         {
             // Arrange
-            var expectedId1 = Guid.NewGuid();
-            var expectedId2 = Guid.NewGuid();
             var shirts = new List<Shirt>
             {
-                new Shirt(expectedId1, "1. Red - Small", Size.Small, Color.Red),
-                new Shirt(expectedId2, "2. Red - Large", Size.Large, Color.Red),
+                new Shirt(Guid.NewGuid(), "1. Red - Small", Size.Small, Color.Red),
+                new Shirt(Guid.NewGuid(), "2. Red - Large", Size.Large, Color.Red),
                 new Shirt(Guid.NewGuid(), "3. Black - Small", Size.Small, Color.Black),
                 new Shirt(Guid.NewGuid(), "3. Black - Medium", Size.Medium, Color.Black),
                 new Shirt(Guid.NewGuid(), "4. Black - Large", Size.Large, Color.Black),
@@ -85,7 +82,7 @@ namespace ConstructionLine.CodingChallenge.Tests
             // Assert
             AssertColorCounts(results.ColorCounts, red: 2, blue: 0, yellow: 0, white: 0, black: 3);
             AssertSizeCounts(results.SizeCounts, small: 2, medium: 1, large: 2);
-            AssertResultShirts(results.Shirts, expectedId1, expectedId2);
+            AssertResultShirts(results.Shirts, expectedIds: new Guid[0]);
         }
 
         [Test]
