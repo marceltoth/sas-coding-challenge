@@ -4,15 +4,12 @@ namespace ConstructionLine.CodingChallenge
 {
     public class SearchResults
     {
-        public List<Shirt> Shirts { get; set; }
+        public IList<Shirt> Shirts { get; set; }
 
+        public IList<SizeCount> SizeCounts { get; set; }
 
-        public List<SizeCount> SizeCounts { get; set; }
-
-
-        public List<ColorCount> ColorCounts { get; set; }
+        public IList<ColorCount> ColorCounts { get; set; }
     }
-
 
     public class SizeCount
     {
@@ -20,7 +17,6 @@ namespace ConstructionLine.CodingChallenge
 
         public int Count { get; set; }
     }
-
 
     public class ColorCount
     {
