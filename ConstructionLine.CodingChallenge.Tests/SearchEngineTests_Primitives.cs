@@ -9,7 +9,27 @@ namespace ConstructionLine.CodingChallenge.Tests
     public class SearchEngineTests_Primitives : SearchEngineTestsBase
     {
         [Test]
-        public void ShouldReturnCorrectShirt_WhenQueryingSingleSizeWithoutColor()
+        public void ShouldReturnCorrectResultsAndNotFail_WhenNoShirtsAvailable()
+        {
+            // Arrange
+            var shirts = new List<Shirt>();
+            var searchEngine = new SearchEngine(shirts);
+            var searchOptions = new SearchOptions
+            {
+                Sizes = new List<Size> { Size.Medium }
+            };
+
+            // Act
+            var results = searchEngine.Search(searchOptions);
+
+            // Assert
+            AssertColorCounts(results.ColorCounts, red: 0, blue: 0, yellow: 0, white: 0, black: 0);
+            AssertSizeCounts(results.SizeCounts, small: 0, medium: 0, large: 0);
+            AssertResultShirts(results.Shirts, expectedIds: new Guid[0]);
+        }
+
+        [Test]
+        public void ShouldReturnCorrectResults_WhenQueryingSingleSizeWithoutColor()
         {
             // Arrange
             var expectedId = Guid.NewGuid();
@@ -34,11 +54,11 @@ namespace ConstructionLine.CodingChallenge.Tests
             // Assert
             AssertColorCounts(results.ColorCounts, red: 2, blue: 0, yellow: 0, white: 0, black: 2);
             AssertSizeCounts(results.SizeCounts, small: 1, medium: 1, large: 2);
-            AsserResultShirts(results.Shirts, expectedId);
+            AssertResultShirts(results.Shirts, expectedId);
         }
 
         [Test]
-        public void ShouldReturnCorrectShirt_WhenQueryingSingleColorWithoutSize()
+        public void ShouldReturnCorrectResults_WhenQueryingSingleColorWithoutSize()
         {
             // Arrange
             var expectedId1 = Guid.NewGuid();
@@ -65,7 +85,86 @@ namespace ConstructionLine.CodingChallenge.Tests
             // Assert
             AssertColorCounts(results.ColorCounts, red: 2, blue: 0, yellow: 0, white: 0, black: 3);
             AssertSizeCounts(results.SizeCounts, small: 2, medium: 1, large: 2);
-            AsserResultShirts(results.Shirts, expectedId1, expectedId2);
+            AssertResultShirts(results.Shirts, expectedId1, expectedId2);
+        }
+
+        [Test]
+        public void ShouldReturnCorrectResults_WhenQueryingSingleItem()
+        {
+            // Arrange
+            var expectedId = Guid.NewGuid();
+            var shirts = new List<Shirt>
+            {
+                new Shirt(expectedId, "1. Black - Small", Size.Small, Color.Black),
+            };
+
+            var searchEngine = new SearchEngine(shirts);
+
+            var searchOptions = new SearchOptions
+            {
+                Colors = new List<Color> { Color.Black },
+                Sizes = new List<Size> { Size.Small }
+            };
+
+            // Act
+            var results = searchEngine.Search(searchOptions);
+
+            // Assert
+            AssertColorCounts(results.ColorCounts, red: 0, blue: 0, yellow: 0, white: 0, black: 1);
+            AssertSizeCounts(results.SizeCounts, small: 1, medium: 0, large: 0);
+            AssertResultShirts(results.Shirts, expectedId);
+        }
+
+        [Test]
+        public void ShouldReturnNoResults_WhenFilterPartiallyMatching()
+        {
+            // Arrange
+            var shirts = new List<Shirt>
+            {
+                new Shirt(Guid.NewGuid(), "1. Blue - Medium", Size.Medium, Color.Blue),
+            };
+
+            var searchEngine = new SearchEngine(shirts);
+
+            var searchOptions = new SearchOptions
+            {
+                Colors = new List<Color> { Color.Black },
+                Sizes = new List<Size> { Size.Medium }
+            };
+
+            // Act
+            var results = searchEngine.Search(searchOptions);
+
+            // Assert
+            AssertColorCounts(results.ColorCounts, red: 0, blue: 1, yellow: 0, white: 0, black: 0);
+            AssertSizeCounts(results.SizeCounts, small: 0, medium: 1, large: 0);
+            AssertResultShirts(results.Shirts, expectedIds: new Guid[0]);
+        }
+
+        [Test]
+        public void ShouldReturnNoResults_WhenFilterNotMatching()
+        {
+            // Arrange
+            var shirts = new List<Shirt>
+            {
+                new Shirt(Guid.NewGuid(), "1. Blue - Medium", Size.Medium, Color.Blue),
+            };
+
+            var searchEngine = new SearchEngine(shirts);
+
+            var searchOptions = new SearchOptions
+            {
+                Colors = new List<Color> { Color.Yellow },
+                Sizes = new List<Size> { Size.Medium }
+            };
+
+            // Act
+            var results = searchEngine.Search(searchOptions);
+
+            // Assert
+            AssertColorCounts(results.ColorCounts, red: 0, blue: 1, yellow: 0, white: 0, black: 0);
+            AssertSizeCounts(results.SizeCounts, small: 0, medium: 1, large: 0);
+            AssertResultShirts(results.Shirts, expectedIds: new Guid[0]);
         }
 
         private static void AssertColorCounts(IList<ColorCount> colorCounts,
@@ -102,12 +201,12 @@ namespace ConstructionLine.CodingChallenge.Tests
             Assert.That(actualLargeCount == large);
         }
 
-        private static void AsserResultShirts(IList<Shirt> foundShirts, params Guid[] expectedIds)
+        private static void AssertResultShirts(IList<Shirt> foundShirts, params Guid[] expectedIds)
         {
-            Assert.NotNull(expectedIds);
-            Assert.NotNull(foundShirts);
-
+            Assert.IsNotNull(expectedIds);
+            Assert.IsNotNull(foundShirts);
             Assert.IsTrue(expectedIds.Length == foundShirts.Count);
+
             foreach (var expectedId in expectedIds)
             {
                 var occurrences = foundShirts.Count(shirt => shirt.Id == expectedId);
